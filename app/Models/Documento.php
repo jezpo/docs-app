@@ -3,87 +3,131 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
 class Documento extends Model
 {
-    use HasFactory;
-
-    //protected $connection = 'pgsql';
     protected $table = 'documentos';
     protected $primaryKey = 'id';
-    public $timestamps = false;
-
+    public $timestamps = true;
     protected $fillable = [
-        'id',
         'cite',
         'descripcion',
         'estado',
         'hash',
-        'id_tipo_documento',
-        'documento',
-        'id_programa'
-
+        'id_programa',
+        'id_origen_tipo',
     ];
-    public function programas()
+
+    // Relación con el modelo OrigenTipo
+    public function origenTipo()
     {
-        return $this->belongsTo(Programa::class);
+        return $this->belongsTo(Origen::class, 'id_origen_tipo');
     }
 
-    public function flujoDocumentos()
+    // Relación con el modelo Programa (suponiendo que hay un modelo Programa)
+    public function programa()
     {
-        return $this->hasMany(FlujoDocumento::class);
+        return $this->belongsTo(Programa::class, 'id_programa');
     }
-    public function tiposTramite()
-    {
-        return $this->hasMany(TipoTramite::class, 'id');
-    }
+
+    // Método para obtener todos los documentos
     public static function list_documents()
     {
-        $query = DB::select('select doc.id,doc.cite,doc.descripcion,doc.estado,doc.id_tipo_documento,doc.id_programa,pr.programa from documentos doc inner join programas pr on doc.id_programa = pr.id_programa ');
-        return $query;
-    }
-    public static function list_documents_origen()
-    {
-        $query = DB::table('documentos')
-            ->select('id', 'cite', 'descripcion', 'estado', 'id_tipo_documento', 'id_programa')
-            ->where('id_programa', 'DBU')
-            ->get();
-
-        return $query;
-    }
-    /*public static function list_documents_destino()
-    {
-        return Documento::select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa')
+        return DB::table('documentos')
             ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
-            ->where('programas.programa', '!=', 'DBU')
-            ->where('programas.programa', '!=', 'DEPARTAMENTO DE BIENESTAR UNIVERSITARIO')
-            ->get();
-    }*/
-    public static function list_documents_destino()
-    {
-        return Documento::select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa')
-            ->join('programas', function ($join) {
-                $join->on('documentos.id_programa', '=', 'programas.id_programa')
-                    ->whereNotIn('programas.programa', ['DBU', 'DEPARTAMENTO DE BIENESTAR UNIVERSITARIO']);
-            })
+            ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
+            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
             ->get();
     }
-    public static function obtenerProgramasPorDocumento($documentoId)
-{
-    // Ejecutar la consulta SQL
-    $programas = DB::table('flujo_documentos')
-        ->select('programas.*')
-        ->join('programas', 'flujo_documentos.id_programa', '=', 'programas.id_programa')
-        ->where('flujo_documentos.id_documento', $documentoId)
-        ->distinct()
-        ->get();
-
-    // Devolver los resultados
-    return $programas;
-}
 
 
+    public static function list_documents_enviados()
+    {
+        return DB::table('documentos')
+            ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
+            ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
+            ->where('origen_tipos.tipo', 'Enviado')
+            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
+            ->get();
+    }
 
+    public static function list_documents_recibidos()
+    {
+        return DB::table('documentos')
+            ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
+            ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
+            ->where('origen_tipos.tipo', 'Recibido')
+            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
+            ->get();
+    }
+
+
+
+
+    // Método para insertar un documento
+    public static function insertData($data)
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("INSERT INTO documentos (cite, descripcion, estado, hash, documento, id_programa, id_origen_tipo, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmt->bindParam(1, $data['cite']);
+        $stmt->bindParam(2, $data['descripcion']);
+        $stmt->bindParam(3, $data['estado']);
+        $stmt->bindParam(4, $data['hash']);
+        $stmt->bindParam(5, $data['documento'], \PDO::PARAM_LOB);
+        $stmt->bindParam(6, $data['id_programa']);
+        $stmt->bindParam(7, $data['id_origen_tipo']);
+        $stmt->execute();
+    }
+
+    // Método para actualizar un documento
+    public static function updateData($id, $data)
+    {
+        $pdo = DB::getPdo();
+        if (isset($data['documento'])) {
+            $stmt = $pdo->prepare("UPDATE documentos SET cite = ?, descripcion = ?, estado = ?, hash = ?, documento = ?, id_programa = ?, id_origen_tipo = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->bindParam(1, $data['cite']);
+            $stmt->bindParam(2, $data['descripcion']);
+            $stmt->bindParam(3, $data['estado']);
+            $stmt->bindParam(4, $data['hash']);
+            $stmt->bindParam(5, $data['documento'], \PDO::PARAM_LOB);
+            $stmt->bindParam(6, $data['id_programa']);
+            $stmt->bindParam(7, $data['id_origen_tipo']);
+            $stmt->bindParam(8, $id);
+        } else {
+            $stmt = $pdo->prepare("UPDATE documentos SET cite = ?, descripcion = ?, estado = ?, hash = ?, id_programa = ?, id_origen_tipo = ?, updated_at = NOW() WHERE id = ?");
+            $stmt->bindParam(1, $data['cite']);
+            $stmt->bindParam(2, $data['descripcion']);
+            $stmt->bindParam(3, $data['estado']);
+            $stmt->bindParam(4, $data['hash']);
+            $stmt->bindParam(5, $data['id_programa']);
+            $stmt->bindParam(6, $data['id_origen_tipo']);
+            $stmt->bindParam(7, $id);
+        }
+        $stmt->execute();
+    }
+
+
+    // Método para ver los datos de un documento
+    public static function viewData($id)
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("SELECT documento FROM documentos WHERE id = ?");
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+        $result = $stmt->fetchColumn();
+        if (is_resource($result)) {
+            $result = stream_get_contents($result);
+        }
+        return $result;
+    }
+
+    // Método para eliminar un documento
+    public static function deleteData($id)
+    {
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare("DELETE FROM documentos WHERE id = ?");
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+    }
 }

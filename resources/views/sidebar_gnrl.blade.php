@@ -4,7 +4,11 @@
         <i class="material-icons">people</i> <span>Usuarios</span>
     </a>
 </li>
-
+<li>
+    <a href="{{ url('gestion') }}">
+        <i class="material-icons">calendar_today</i> <span>Gestion</span>
+    </a>
+</li>
 <li>
     <a href="{{ url('permissions') }}">       
         <i class="material-icons">lock</i> <span>Permisos</span>
@@ -18,41 +22,17 @@
 </li>
 
 <li>
-    <a href="{{ url('dashboard/documentos-reci') }}">
-        <i class="material-icons">inbox</i>  <span>Documentos recibidos</span>
-    </a>
-</li>
-<li>
-    <a href="{{ url('dashboard/documentos-env') }}">
-        <i class="material-icons">send</i> <span>Documentos enviados</span>
-    </a>
-</li>
-<li>
-    <a href="{{ url('/flujos/buscar') }}">
-        <i class="material-icons">description</i> <span>Buscar Documento</span>
-    </a>
-</li>
-<li>
-    <a href="{{ url('/dashboard/flujo-tramites') }}">
-        <i class="material-icons">sync_alt</i> <span>Flujo de trámite </span>
-    </a>
-</li>
-<li>
-    <a href="{{ url('/dashboard/flujo-documentos') }}">
-        <i class="material-icons">description</i> <span>Flujo de documentos </span>
+    <a href="{{ url('documentos') }}">
+        <i class="material-icons">inbox</i>  <span>Documentos</span>
     </a>
 </li>
 
 <li>
-    <a href="{{ url('/dashboard/tipo-tramites') }}">
-        <i class="material-icons">assignment</i>  <span>Trámite</span>
-    </a>
-</li>
-<li>
     <a href="{{ url('/dashboard/programas') }}">
-        <i class="material-icons">school</i> <span>Unidad o carrera </span>
+        <i class="material-icons">school</i> <span>Unidad</span>
     </a>
 </li>
+
 {{--
 <li class="has-sub active expand">
     <a href="javascript:;">

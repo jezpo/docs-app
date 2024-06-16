@@ -53,6 +53,54 @@
 
                             <br>
                             <!-- Modal para Nuevo -->
+
+                            <!--DONDE MUESTRA LAS TABLAS ATRAVES DE DATA TABLES -->
+                            <div style="position: absolute; height: 1px; width: 0px; overflow: hidden;">
+                                <input type="text" tabindex="0">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="documentos-table"
+                                        class="table table-striped table-bordered table-td-valign-middle dt-responsive "
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+
+                                                <th class="text-nowrap">Nro.</th>
+                                                <th class="text-nowrap">Cite</th>
+                                                <th class="text-nowrap">Descripción</th>
+                                                <th class="text-nowrap">Estado</th>
+                                                <th class="text-nowrap">Tipo de Documento</th>
+                                                <th class="text-nowrap">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <!--FINAL DE CODIGO DONDE MUESTRA LAS TABLAS -->
+
+                            <!-- Modal para Ver -->
+                            <div class="modal fade" id="verDocumentoModal" tabindex="-1" role="dialog"
+                                aria-labelledby="verDocumentoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="verDocumentoModalLabel">Detalles del Documento
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Contenido para mostrar detalles del documento -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="modal fade" class="modal fade" id="modal-dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -123,16 +171,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row m-b-15">
-                                                    <label class="col-md-4 col-sm-4 col-form-label">Archivo:
-                                                    </label>
+                                                    <label class="col-md-4 col-sm-4 col-form-label">Archivo:</label>
                                                     <div class="col-md-8 col-sm-8">
-
-                                                        <div class="form-group">
-
-                                                            <input type="file" class="form-control-file"
-                                                                id="docummento" name="documento" accept=".pdf">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input"
+                                                                id="documento" name="documento" accept=".pdf">
+                                                            <label class="custom-file-label" for="documento">Subir
+                                                                Archivo</label>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                                 <div class="form-group row m-b-15">
@@ -162,64 +208,17 @@
                                                 </div>
 
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                     <button type="submit" class="btn btn-primary">
                                                         <i class="fas fa-save"></i> Guardar
                                                     </button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cerrar</button>
                                                 </div>
-
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--DONDE MUESTRA LAS TABLAS ATRAVES DE DATA TABLES -->
-                            <div style="position: absolute; height: 1px; width: 0px; overflow: hidden;">
-                                <input type="text" tabindex="0">
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table id="documentos-table"
-                                        class="table table-striped table-bordered table-td-valign-middle dt-responsive "
-                                        style="width:100%">
-                                        <thead>
-                                            <tr>
-
-                                                <th class="text-nowrap">Nro.</th>
-                                                <th class="text-nowrap">Cite</th>
-                                                <th class="text-nowrap">Descripción</th>
-                                                <th class="text-nowrap">Estado</th>
-                                                <th class="text-nowrap">Tipo de Documento</th>
-                                                <th class="text-nowrap">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-
-                                </div>
-                            </div>
-                            <!--FINAL DE CODIGO DONDE MUESTRA LAS TABLAS -->
-
-                            <!-- Modal para Ver -->
-                            <div class="modal fade" id="verDocumentoModal" tabindex="-1" role="dialog"
-                                aria-labelledby="verDocumentoModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="verDocumentoModalLabel">Detalles del Documento
-                                            </h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Contenido para mostrar detalles del documento -->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
 
                             <!-- Modal para Editar -->
                             <div class="modal fade" id="editarDocumentoModal" tabindex="-1" role="dialog"

@@ -3,6 +3,7 @@
 @section('title', ' UATF ' . 'Home')
 
 @push('css')
+    <link href="../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     {{-- Aqui se coloca los CSS de assets --}}
 @endpush
 
@@ -33,8 +34,8 @@
                     <div class="widget widget-stats bg-blue">
                         <div class="stats-icon"><i class="fa fa-desktop"></i></div>
                         <div class="stats-info">
-                            <h4>TOTAL VISITORS</h4>
-                            <p>3,291,922</p>
+                            <h4>TOTAL</h4>
+                            <p>{{ 122 }}</p>
                         </div>
                         <div class="stats-link">
                             <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
@@ -47,8 +48,8 @@
                     <div class="widget widget-stats bg-info">
                         <div class="stats-icon"><i class="fa fa-link"></i></div>
                         <div class="stats-info">
-                            <h4>BOUNCE RATE</h4>
-                            <p>20.44%</p>
+                            <h4>TOTAL USUARIOS</h4>
+                            <p>{{ $totalUsuarios }}</p>
                         </div>
                         <div class="stats-link">
                             <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
@@ -61,8 +62,8 @@
                     <div class="widget widget-stats bg-orange">
                         <div class="stats-icon"><i class="fa fa-users"></i></div>
                         <div class="stats-info">
-                            <h4>UNIQUE VISITORS</h4>
-                            <p>1,291,922</p>
+                            <h4>TOTAL DOCUMENTOS</h4>
+                            <p>{{ $totalDocumentos }}</p>
                         </div>
                         <div class="stats-link">
                             <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
@@ -75,8 +76,8 @@
                     <div class="widget widget-stats bg-red">
                         <div class="stats-icon"><i class="fa fa-clock"></i></div>
                         <div class="stats-info">
-                            <h4>AVG TIME ON SITE</h4>
-                            <p>00:12:23</p>
+                            <h4>TOTAL PROGRAMAS</h4>
+                            <p>{{ $totalProgramas }}</p>
                         </div>
                         <div class="stats-link">
                             <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
@@ -138,4 +139,18 @@
     <script src="../assets/js/demo/ui-modal-notification.demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <script src="../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    @if(session('welcome'))
+    <script>
+        $(document).ready(function() {
+            $.gritter.add({
+                title: 'Bienvenido!',
+                text: 'Has iniciado sesión correctamente.',
+                class_name: 'gritter-green',
+                sticky: false, // Asegúrate de que sticky esté en false para que la notificación se cierre automáticamente
+                time: 5000, // Tiempo en milisegundos (5000 ms = 5 segundos)
+            });
+        });
+    </script>
+    @endif
 @endpush

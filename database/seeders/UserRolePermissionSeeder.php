@@ -61,6 +61,7 @@ class UserRolePermissionSeeder extends Seeder
         ], [
             'name' => 'Super Admin',
             'last_name' => 'Lastname',
+            'ci' => '1111111',
             'email' => 'superadmin@gmail.com',
             'password' => Hash::make('12345678'),
         ]);
@@ -73,6 +74,7 @@ class UserRolePermissionSeeder extends Seeder
         ], [
             'name' => 'Admin',
             'last_name' => 'Lastname',
+            'ci' => '2222222',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
         ]);
@@ -85,6 +87,7 @@ class UserRolePermissionSeeder extends Seeder
         ], [
             'name' => 'Staff',
             'last_name' => 'Lastname',
+            'ci' => '3333333',
             'email' => 'staff@gmail.com',
             'password' => Hash::make('12345678'),
         ]);

@@ -9,13 +9,13 @@ use App\Models\Documento;
 
 class GestionController extends Controller
 {
-    public function __construct()
+    /*public function __construct()
     {
         $this->middleware('permission:view gestion', ['only' => ['index', 'getDocumentsByYear']]);
         $this->middleware('permission:create gestion', ['only' => ['create', 'store']]);
         $this->middleware('permission:update gestion', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete gestion', ['only' => ['destroy']]);
-    }
+    }*/
 
     public function index(Request $request)
     {
@@ -45,9 +45,10 @@ class GestionController extends Controller
         return back();
     }
 
-    public function edit(Gestion $gestion)
+    public function edit($id)
     {
-        return view('gestion.edit', compact('gestion'));
+        $gestion = Gestion::find($id);
+        return response()->json($gestion);
     }
 
     public function update(Request $request, Gestion $gestion)

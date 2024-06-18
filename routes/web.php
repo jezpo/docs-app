@@ -4,15 +4,11 @@ use App\Http\Controllers\BuscarFlujoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProgramaController;
-use App\Http\Controllers\TipoTramiteController;
-use App\Http\Controllers\FlujoTramiteController;
-use App\Http\Controllers\FlujoDocumentoController;
-use App\Http\Controllers\DocumentosEnvController;
-use App\Http\Controllers\DocumentosReciController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\DocumentosController;
+use App\Http\Controllers\ActivityLogController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -34,7 +30,7 @@ Route::middleware([
     })->name('dashboard');
 
     // Otras rutas autenticadas existentes
-    Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['role:super-admin|admin']], function () {
         Route::resource('permissions', App\Http\Controllers\PermissionController::class);
         Route::delete('permissions/{id}', [App\Http\Controllers\PermissionController::class, 'permissions.destroy']);
 
@@ -46,6 +42,12 @@ Route::middleware([
         Route::resource('users', App\Http\Controllers\UserController::class);
         Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
         Route::post('users/{user}/toggleStatus', [App\Http\Controllers\UserController::class, 'toggleStatus'])->name('users.toggleStatus');
+
+        // Ruta para el índice de reportes
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+
 
         Route::resource('documentos', DocumentosController::class);
         Route::get('documentos', [DocumentosController::class, 'index'])->name('documentos.index');

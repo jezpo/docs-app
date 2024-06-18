@@ -27,18 +27,17 @@
             </div>
         </div>
         <div class="panel-body">
-            <h1>Bienvenido a la correspondencia</h1>
             <div class="row">
                 <!-- begin col-3 -->
                 <div class="col-xl-3 col-md-6">
                     <div class="widget widget-stats bg-blue">
-                        <div class="stats-icon"><i class="fa fa-desktop"></i></div>
+                        <div class="stats-icon"><i class="fa fa-calendar-check"></i></div>
                         <div class="stats-info">
-                            <h4>TOTAL</h4>
-                            <p>{{ 122 }}</p>
+                            <h4>Gestion</h4>
+                            <p>{{ $gestion }}</p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                            <a href="{{ url('gestion') }}">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -46,13 +45,13 @@
                 <!-- begin col-3 -->
                 <div class="col-xl-3 col-md-6">
                     <div class="widget widget-stats bg-info">
-                        <div class="stats-icon"><i class="fa fa-link"></i></div>
+                        <div class="stats-icon"><i class="fa fa-users"></i></div>
                         <div class="stats-info">
-                            <h4>TOTAL USUARIOS</h4>
+                            <h4>Total Usuarios</h4>
                             <p>{{ $totalUsuarios }}</p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                            <a href="{{ url('users') }}">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -60,13 +59,13 @@
                 <!-- begin col-3 -->
                 <div class="col-xl-3 col-md-6">
                     <div class="widget widget-stats bg-orange">
-                        <div class="stats-icon"><i class="fa fa-users"></i></div>
+                        <div class="stats-icon"><i class="fa fa-file"></i></div>
                         <div class="stats-info">
-                            <h4>TOTAL DOCUMENTOS</h4>
+                            <h4>Total Documentos</h4>
                             <p>{{ $totalDocumentos }}</p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                            <a href="{{ url('documentos') }}">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -74,20 +73,61 @@
                 <!-- begin col-3 -->
                 <div class="col-xl-3 col-md-6">
                     <div class="widget widget-stats bg-red">
-                        <div class="stats-icon"><i class="fa fa-clock"></i></div>
+                        <div class="stats-icon"><i class="fa fa-building"></i></div>
                         <div class="stats-info">
-                            <h4>TOTAL PROGRAMAS</h4>
+                            <h4>Total Unidades</h4>
                             <p>{{ $totalProgramas }}</p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                            <a href="{{ url('programas') }}">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col-3 -->
+               <!-- begin col-3 -->
+        <div class="col-xl-3 col-md-6">
+            <div class="widget widget-stats bg-yellow">
+                <div class="stats-icon"><i class="fa fa-calendar-day"></i></div>
+                <div class="stats-info">
+                    <h4>Registros hoy</h4>
+                    <p>{{ $totalDocumentosToday }}</p>
+                </div>
+                <div class="stats-link">
+                    <a href="#">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- end col-3 -->
+                <!-- begin col-3 -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-orange">
+                        <div class="stats-icon"><i class="fa fa-calendar-alt"></i></div>
+                        <div class="stats-info">
+                            <h4>Registros este mes</h4>
+                            <p>{{$totalDocumentosThisWeek}}</p>
+                        </div>
+                        <div class="stats-link">
+                            <a href="#">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col-3 -->
+                <!-- begin col-3 -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-orange">
+                        <div class="stats-icon"><i class="fa fa-calendar-alt"></i></div>
+                        <div class="stats-info">
+                            <h4>Registros este mes</h4>
+                            <p>{{$totalDocumentosThisMonth}}</p>
+                        </div>
+                        <div class="stats-link">
+                            <a href="#">View Detail <i class="fa fa-arrow-alt-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
                 <!-- end col-3 -->
             </div>
         </div>
-    </div>
 @endsection
 
 

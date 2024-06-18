@@ -17,6 +17,7 @@ class Documento extends Model
         'hash',
         'id_programa',
         'id_origen_tipo',
+        'created_at'
     ];
 
     // Relación con el modelo OrigenTipo
@@ -31,7 +32,6 @@ class Documento extends Model
         return $this->belongsTo(Programa::class, 'id_programa');
     }
 
-    // Método para obtener todos los documentos
     public static function list_documents()
     {
         return DB::table('documentos')
@@ -42,22 +42,26 @@ class Documento extends Model
     }
 
 
-    public static function list_documents_enviados()
+
+
+    public static function list_documents_enviados($startDate, $endDate)
     {
         return DB::table('documentos')
             ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
             ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
             ->where('origen_tipos.tipo', 'Enviado')
+            ->whereBetween('documentos.created_at', [$startDate, $endDate])
             ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
             ->get();
     }
 
-    public static function list_documents_recibidos()
+    public static function list_documents_recibidos($startDate, $endDate)
     {
         return DB::table('documentos')
             ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
             ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
             ->where('origen_tipos.tipo', 'Recibido')
+            ->whereBetween('documentos.created_at', [$startDate, $endDate])
             ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
             ->get();
     }

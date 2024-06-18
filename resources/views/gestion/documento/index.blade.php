@@ -13,6 +13,7 @@
 @endsection
 
 @section('content')
+
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Principal</a></li>
 
@@ -260,8 +261,7 @@
         </div>
 
         <!-- Modal para Editar -->
-        <div class="modal fade" id="editarDocumentoModal" tabindex="-1" role="dialog"
-            aria-labelledby="editarDocumentoModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editarDocumentoModal" tabindex="-1" role="dialog" aria-labelledby="editarDocumentoModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -276,50 +276,42 @@
                         <!-- Formulario de edición -->
                         <form id="editDocumentoForm" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <!-- Dentro del formulario -->
                             <input type="hidden" id="txtId2" name="txtId2">
                             <div class="form-group row m-b-15">
-                                <label class="col-md-4 col-sm-4 col-form-label">Tipo de
-                                    Documento:</label>
+                                <label class="col-md-4 col-sm-4 col-form-label">Tipo de Documento:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="origen_tipos_id2" name="origen_tipos_id2"
-                                        data-parsley-required="true">
+                                    <select class="form-control" id="origen_tipos_id2" name="origen_tipos_id2" data-parsley-required="true">
                                         <option value="">Por favor selecciona una opción</option>
                                         <option value="1" data-tipo="1">Enviado</option>
                                         <option value="2" data-tipo="2">Recibido</option>
                                     </select>
                                     @error('origen_tipos_id2')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
-                                            <li class="parsley-required">{{ 'Este valor es requerido' }}
-                                            </li>
+                                            <li class="parsley-required">{{ 'Este valor es requerido' }}</li>
                                         </ul>
                                     @enderror
                                 </div>
                             </div>
-
+        
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label" for="fullname">Cite:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <input class="form-control" type="text" id="cite2" value=""
-                                        name="cite2" placeholder="cite" data-parsley-required="true">
+                                    <input class="form-control" type="text" id="cite2" value="" name="cite2" placeholder="cite" data-parsley-required="true">
                                     @error('cite')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
-                                            <li class="parsley-required">
-                                                {{ 'Este valor es requerido' }}</li>
+                                            <li class="parsley-required">{{ 'Este valor es requerido' }}</li>
                                         </ul>
                                     @enderror
                                 </div>
                             </div>
-
+        
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label" for="fullname">Descripcion:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <input class="form-control" type="text" id="descripcion2" value=""
-                                        name="descripcion2" placeholder="descripcion" data-parsley-required="true">
+                                    <textarea class="form-control" type="text" id="descripcion2" value="" name="descripcion2" placeholder="descripcion" data-parsley-required="true"></textarea>
                                     @error('descripcion')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
-                                            <li class="parsley-required">
-                                                {{ 'Este valor es requerido' }}</li>
+                                            <li class="parsley-required">{{ 'Este valor es requerido' }}</li>
                                         </ul>
                                     @enderror
                                 </div>
@@ -327,52 +319,31 @@
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Estado: </label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="estado2" name="estado2"
-                                        data-parsley-required="true">
-                                        <option value="">Por favor selecciona una opcion
-                                        </option>
+                                    <select class="form-control" id="estado2" name="estado2" data-parsley-required="true">
+                                        <option value="">Por favor selecciona una opcion</option>
                                         <option value="A">Activo</option>
                                         <option value="I">Inactivo</option>
                                         @error('estado')
                                             <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
-                                                <li class="parsley-required">
-                                                    {{ 'este valor es requerido' }}</li>
+                                                <li class="parsley-required">{{ 'este valor es requerido' }}</li>
                                             </ul>
                                         @enderror
                                     </select>
                                 </div>
                             </div>
-
+        
                             <div class="form-group row m-b-15">
-                                <label class="col-md-4 col-sm-4 col-form-label">Archivo:
-                                </label>
-                                <div class="col-md-8 col-sm-8">
-
-                                    <div class="form-group">
-                                        <button type="button" data-toggle="modal" data-target="#pdfModal"
-                                            data-toggle="tooltip" title="Visualizar Documento"
-                                            class="btn btn-info btn-sm"><i class="fas fa-eye text-white"></i>
-                                            Visualizar</button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group row m-b-15">
-                                <label class="col-md-4 col-sm-4 col-form-label">Archivo:
-                                </label>
+                                <label class="col-md-4 col-sm-4 col-form-label">Archivo:</label>
                                 <div class="col-md-8 col-sm-8">
                                     <div class="form-group">
-                                        <input type="file" class="form-control-file" id="documento2"
-                                            name="documento2" accept=".pdf">
+                                        <input type="file" class="form-control-file" id="documento2" name="documento2" accept=".pdf">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Tipo de documento:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="id_tipo_documento2"
-                                        name="id_tipo_documento2" data-parsley-required="true">
+                                    <select class="form-control" id="id_tipo_documento2" name="id_tipo_documento2" data-parsley-required="true">
                                         <option value="">Por favor selecciona una opción</option>
                                         <option value="1">Carta</option>
                                         <option value="2">Dictamen</option>
@@ -390,22 +361,19 @@
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Origen:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control select2_programas23" id="id_programa23"
-                                        name="id_programa23" data-parsley-required="true">
+                                    <select class="form-control select2_programas23" id="id_programa23" name="id_programa23" data-parsley-required="true">
                                         <option value="">Por favor selecciona el origen</option>
                                         <!-- Opciones dinámicas desde tu backend -->
                                         @foreach ($programas as $opcion)
-                                            <option value="{{ $opcion['id_programa'] }}">
-                                                {{ $opcion['programa'] }}</option>
+                                            <option value="{{ $opcion['id_programa'] }}">{{ $opcion['programa'] }}</option>
                                         @endforeach
                                     </select>
-                                    <!-- Manejo de errores -->
                                     @error('id_programa23')
                                         <div class="text-danger">{{ 'Este valor es requerido' }}</div>
                                     @enderror
                                 </div>
                             </div>
-
+        
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                     <i class="fas fa-times"></i> Cancelar
@@ -419,6 +387,7 @@
                 </div>
             </div>
         </div>
+        
 
         <!-- Modal para Eliminar -->
         <div class="modal fade" id="deleteDocument" tabindex="-1" role="dialog"
@@ -535,7 +504,8 @@
                 ajax: {
                     url: "{{ route('documentos.index') }}",
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'id',
                         name: 'id',
                         render: function(data, type, row, meta) {
@@ -584,24 +554,48 @@
                     {
                         data: 'action',
                         name: 'action',
-                        orderable: true,
-                        searchable: true
+                        orderable: false,
+                        searchable: false
                     }
                 ],
-                buttons: [{
-                        extend: 'pdf',
-                        className: 'btn btn-danger',
-                        text: '<i class="fa fa-file-pdf"></i> PDF'
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: '<i class="fa fa-copy"></i> Copiar',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<i class="fa fa-file-csv"></i> CSV',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
                     },
                     {
                         extend: 'excel',
                         className: 'btn btn-success',
-                        text: '<i class="fa fa-file-excel"></i> Excel'
+                        text: '<i class="fa fa-file-excel"></i> Excel',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-danger',
+                        text: '<i class="fa fa-file-pdf"></i> PDF',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
                     },
                     {
                         extend: 'print',
                         className: 'btn btn-primary',
-                        text: '<i class="fa fa-print"></i> Imprimir'
+                        text: '<i class="fa fa-print"></i> Imprimir',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
                     }
                 ],
                 language: {
@@ -611,6 +605,7 @@
             });
         });
     </script>
+    
     <script>
         $(function() {
             // Limpia el formulario y abre el modal
@@ -739,17 +734,38 @@
     <script>
         function editDocument(id) {
             $.get('documentos/edit/' + id, function(data) {
+                console.log(data); // Log para verificar los datos recibidos
+
+                if (data.error) {
+                    console.error("Error: " + data.error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Documento no encontrado',
+                    });
+                    return;
+                }
+
                 $('#txtId2').val(data.id);
-                $('#origen_tipos_id2').val(data.origen_tipos_id).trigger('change');
+                $('#origen_tipos_id2').val(data.id_origen_tipo).trigger('change');
                 $('#cite2').val(data.cite);
                 $('#descripcion2').val(data.descripcion);
                 $('#estado2').val(data.estado).trigger('change');
                 $('#documento2').val(''); // Limpiar el campo de entrada de archivo
                 $('#id_tipo_documento2').val(data.id_tipo_documento).trigger('change');
-                $('#id_programa2').val(data.id_programa).trigger('change');
+                $('#id_programa23').val(data.id_programa).trigger('change');
                 $("input[name=_token]").val();
+
+
                 $('#editarDocumentoModal').modal('show');
-            })
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error("Error AJAX: " + textStatus + ' : ' + errorThrown);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo obtener los datos del documento.',
+                });
+            });
         }
 
         $('#editDocumentoForm').submit(function(e) {
@@ -760,7 +776,7 @@
             var descripcion2 = $('#descripcion2').val();
             var estado2 = $('#estado2').val();
             var id_tipo_documento2 = $('#id_tipo_documento2').val();
-            var id_programa2 = $('#id_programa2').val();
+            var id_programa2 = $('#id_programa23').val();
             var documento2 = $('#documento2')[0].files[0]; // Obtener los datos del archivo
             var _token2 = $("input[name=_token]").val();
 
@@ -773,7 +789,10 @@
             formData.append('estado', estado2);
             formData.append('id_tipo_documento', id_tipo_documento2);
             formData.append('id_programa', id_programa2);
-            formData.append('documento', documento2); // Agregar los datos del archivo a los datos del formulario
+            if (documento2) {
+                formData.append('documento',
+                documento2); // Agregar los datos del archivo a los datos del formulario
+            }
             formData.append('_token', _token2);
             $.ajax({
                 url: 'documentos/update/' + id2, // Asegúrate de que esta URL es correcta
@@ -782,7 +801,8 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    if (response) {
+                    console.log(response); // Log para verificar la respuesta
+                    if (response.success) {
                         $('#editarDocumentoModal').modal('hide');
                         Swal.fire({
                             icon: 'success',
@@ -791,10 +811,21 @@
                             timer: 1500
                         });
                         $('#documentos-table').DataTable().ajax.reload();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error || 'Error al actualizar el documento',
+                        });
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log("Error de AJAX: " + textStatus + ' : ' + errorThrown);
+                    console.error("Error AJAX: " + textStatus + ' : ' + errorThrown);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo actualizar el documento.',
+                    });
                 }
             });
         });
@@ -870,8 +901,6 @@
             });
         });
     </script>
-
-
 
     {{-- select2 para tipo de documento --}}
     <script>

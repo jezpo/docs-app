@@ -59,11 +59,9 @@ class DocumentosController extends Controller
     {
         if (request()->ajax()) {
             $documento = Documento::select('id', 'cite', 'descripcion', 'estado', 'id_tipo_documento', 'id_programa', 'origen_tipos_id')->find($id);
-
             if (!$documento) {
                 return response()->json(['error' => 'Documento no encontrado'], 404);
             }
-
             return response()->json($documento);
         }
     }

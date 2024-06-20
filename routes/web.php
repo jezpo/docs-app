@@ -49,6 +49,9 @@ Route::middleware([
         Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
 
         Route::resource('documentos', DocumentosController::class);
+        Route::get('documentos/edit/{id}', [DocumentosController::class, 'edit'])->name('documentos.edit');
+        Route::put('documentos/update/{id}', [DocumentosController::class, 'update'])->name('documentos.update');
+        Route::delete('documentos/destroy/{id}', [DocumentosController::class, 'destroy'])->name('documentos.destroy');
         Route::get('documentos/download/{id}', [DocumentosController::class, 'downloadPdf'])->name('documentos.download');
         Route::get('/generate-cite', [DocumentosController::class, 'generateCite'])->name('generateCite');
 

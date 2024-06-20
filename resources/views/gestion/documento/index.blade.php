@@ -261,7 +261,8 @@
         </div>
 
         <!-- Modal para Editar -->
-        <div class="modal fade" id="editarDocumentoModal" tabindex="-1" role="dialog" aria-labelledby="editarDocumentoModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editarDocumentoModal" tabindex="-1" role="dialog"
+            aria-labelledby="editarDocumentoModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -280,7 +281,7 @@
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Tipo de Documento:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="origen_tipos_id2" name="origen_tipos_id2" data-parsley-required="true">
+                                    <select class="form-control" id="origen_tipos_id2" name="origen_tipos_id" data-parsley-required="true">
                                         <option value="">Por favor selecciona una opción</option>
                                         <option value="1" data-tipo="1">Enviado</option>
                                         <option value="2" data-tipo="2">Recibido</option>
@@ -292,11 +293,12 @@
                                     @enderror
                                 </div>
                             </div>
-        
+
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label" for="fullname">Cite:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <input class="form-control" type="text" id="cite2" value="" name="cite2" placeholder="cite" data-parsley-required="true">
+                                    <input class="form-control" type="text" id="cite2" value=""
+                                        name="cite2" placeholder="cite" data-parsley-required="true">
                                     @error('cite')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
                                             <li class="parsley-required">{{ 'Este valor es requerido' }}</li>
@@ -304,11 +306,12 @@
                                     @enderror
                                 </div>
                             </div>
-        
+
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label" for="fullname">Descripcion:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <textarea class="form-control" type="text" id="descripcion2" value="" name="descripcion2" placeholder="descripcion" data-parsley-required="true"></textarea>
+                                    <textarea class="form-control" type="text" id="descripcion2" value="" name="descripcion2"
+                                        placeholder="descripcion" data-parsley-required="true"></textarea>
                                     @error('descripcion')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
                                             <li class="parsley-required">{{ 'Este valor es requerido' }}</li>
@@ -319,7 +322,8 @@
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Estado: </label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="estado2" name="estado2" data-parsley-required="true">
+                                    <select class="form-control" id="estado2" name="estado2"
+                                        data-parsley-required="true">
                                         <option value="">Por favor selecciona una opcion</option>
                                         <option value="A">Activo</option>
                                         <option value="I">Inactivo</option>
@@ -331,19 +335,21 @@
                                     </select>
                                 </div>
                             </div>
-        
+
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Archivo:</label>
                                 <div class="col-md-8 col-sm-8">
                                     <div class="form-group">
-                                        <input type="file" class="form-control-file" id="documento2" name="documento2" accept=".pdf">
+                                        <input type="file" class="form-control-file" id="documento2"
+                                            name="documento2" accept=".pdf">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Tipo de documento:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="id_tipo_documento2" name="id_tipo_documento2" data-parsley-required="true">
+                                    <select class="form-control" id="id_tipo_documento2" name="id_tipo_documento2"
+                                        data-parsley-required="true">
                                         <option value="">Por favor selecciona una opción</option>
                                         <option value="1">Carta</option>
                                         <option value="2">Dictamen</option>
@@ -361,11 +367,13 @@
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Origen:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control select2_programas23" id="id_programa23" name="id_programa23" data-parsley-required="true">
+                                    <select class="form-control select2_programas23" id="id_programa23"
+                                        name="id_programa23" data-parsley-required="true">
                                         <option value="">Por favor selecciona el origen</option>
                                         <!-- Opciones dinámicas desde tu backend -->
                                         @foreach ($programas as $opcion)
-                                            <option value="{{ $opcion['id_programa'] }}">{{ $opcion['programa'] }}</option>
+                                            <option value="{{ $opcion['id_programa'] }}">{{ $opcion['programa'] }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('id_programa23')
@@ -373,7 +381,7 @@
                                     @enderror
                                 </div>
                             </div>
-        
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                     <i class="fas fa-times"></i> Cancelar
@@ -387,7 +395,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!-- Modal para Eliminar -->
         <div class="modal fade" id="deleteDocument" tabindex="-1" role="dialog"
@@ -504,8 +512,7 @@
                 ajax: {
                     url: "{{ route('documentos.index') }}",
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'id',
                         name: 'id',
                         render: function(data, type, row, meta) {
@@ -558,8 +565,7 @@
                         searchable: false
                     }
                 ],
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copy',
                         text: '<i class="fa fa-copy"></i> Copiar',
                         exportOptions: {
@@ -605,7 +611,7 @@
             });
         });
     </script>
-    
+
     <script>
         $(function() {
             // Limpia el formulario y abre el modal
@@ -733,7 +739,7 @@
 
     <script>
         function editDocument(id) {
-            $.get('documentos/edit/' + id, function(data) {
+            $.get('documentos/' + id + '/edit', function(data) {
                 console.log(data); // Log para verificar los datos recibidos
 
                 if (data.error) {
@@ -747,7 +753,7 @@
                 }
 
                 $('#txtId2').val(data.id);
-                $('#origen_tipos_id2').val(data.id_origen_tipo).trigger('change');
+                $('#origen_tipos_id2').val(data.origen_tipos_id).trigger('change');
                 $('#cite2').val(data.cite);
                 $('#descripcion2').val(data.descripcion);
                 $('#estado2').val(data.estado).trigger('change');
@@ -782,7 +788,6 @@
 
             var formData = new FormData();
             formData.append('_method', 'PUT');
-            formData.append('id', id2);
             formData.append('origen_tipos_id', origen_tipos_id2);
             formData.append('cite', cite2);
             formData.append('descripcion', descripcion2);
@@ -795,7 +800,7 @@
             }
             formData.append('_token', _token2);
             $.ajax({
-                url: 'documentos/update/' + id2, // Asegúrate de que esta URL es correcta
+                url: 'documentos/' + id2, // Asegúrate de que esta URL es correcta
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -882,7 +887,7 @@
                 const citeField = document.getElementById('cite');
                 const anioGestion = document.getElementById('anio_gestion').value;
 
-                if (tipo === '1') { // Ajusta esta condición según el valor de 'tipo'
+                if (tipo === '1') { // Tipo "Enviado"
                     fetch(`{{ route('generateCite') }}?anio_gestion=${anioGestion}`)
                         .then(response => response.json())
                         .then(data => {
@@ -897,6 +902,9 @@
                             console.error('Error:', error);
                             alert('Error al realizar la solicitud.');
                         });
+                } else { // Tipo "Recibido"
+                    citeField.value = ''; // Limpia el valor del campo
+                    citeField.readOnly = false; // Habilitar el campo para edición
                 }
             });
         });

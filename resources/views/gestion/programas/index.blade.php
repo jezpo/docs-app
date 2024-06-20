@@ -539,7 +539,7 @@
     </script>
     <script>
         function editProgram(id) {
-            $.get('/dashboard/programas/' + id + '/edit', function(data) {
+            $.get('/programas/' + id + '/edit', function(data) {
 
                 $('#edit-programa-id').val(data.id);
                 $('#id_programa2').val(data.id_programa);

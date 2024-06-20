@@ -14,4 +14,8 @@ class Origen extends Model
 
     const ENVIADO = 1;
     const RECIBIDO = 2;
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class, 'origen_tipos_id');
+    }
 }

@@ -5,69 +5,75 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 
 class UserRolePermissionSeeder extends Seeder
 {
-
     public function run(): void
     {
-        // Create Permissions
-        Permission::create(['name' => 'view role']);
-        Permission::create(['name' => 'create role']);
-        Permission::create(['name' => 'update role']);
-        Permission::create(['name' => 'delete role']);
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::create(['name' => 'view permission']);
-        Permission::create(['name' => 'create permission']);
-        Permission::create(['name' => 'update permission']);
-        Permission::create(['name' => 'delete permission']);
+        // Define permissions
+        $permissions = [
+            'view role', 'create role', 'update role', 'delete role',
+            'view permission', 'create permission', 'update permission', 'delete permission',
+            'view user', 'create user', 'update user', 'delete user',
+            'create gestion', 'delete gestion', 'update gestion', 'view gestion',
+            'toggle user status', 'view reports',
+            'docs-list', 'docs-create', 'docs-edit', 'docs-view', 'docs-delete',
+            'programa-create', 'programa-delete', 'programa-edit', 'programa-list'
+        ];
 
-        Permission::create(['name' => 'view user']);
-        Permission::create(['name' => 'create user']);
-        Permission::create(['name' => 'update user']);
-        Permission::create(['name' => 'delete user']);
+        // Create permissions if they do not exist
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
 
-        Permission::create(['name' => 'view product']);
-        Permission::create(['name' => 'create product']);
-        Permission::create(['name' => 'update product']);
-        Permission::create(['name' => 'delete product']);
+        // Create roles
+        $superAdminRole = Role::firstOrCreate(['name' => 'super-admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $staffRole = Role::firstOrCreate(['name' => 'staff']);
+        $userRole = Role::firstOrCreate(['name' => 'user']);
 
+        // Assign all permissions to super-admin role
+        $superAdminRole->givePermissionTo($permissions);
 
-        // Create Roles
-        $superAdminRole = Role::create(['name' => 'super-admin']); //as super-admin
-        $adminRole = Role::create(['name' => 'admin']);
-        $staffRole = Role::create(['name' => 'staff']);
-        $userRole = Role::create(['name' => 'user']);
+        // Assign specific permissions to admin role
+        $adminPermissions = [
+            'create role', 'view role', 'update role',
+            'create permission', 'view permission',
+            'create user', 'view user', 'update user',
+            'docs-create', 'docs-delete', 'docs-edit', 'docs-list', 'docs-view', 
+            'programa-create', 'programa-list'
+        ];
+        $adminRole->givePermissionTo($adminPermissions);
 
-        // Lets give all permission to super-admin role.
-        $allPermissionNames = Permission::pluck('name')->toArray();
+        // Assign specific permissions to staff role
+        $staffPermissions = [
+            'docs-create', 'docs-delete', 'docs-edit', 'docs-list', 'docs-view', 
+            'programa-create'
+        ];
+        $staffRole->givePermissionTo($staffPermissions);
 
-        $superAdminRole->givePermissionTo($allPermissionNames);
+        // Assign specific permissions to user role
+        $userPermissions = [
+            'docs-create', 'docs-delete', 'docs-edit', 'docs-list', 'docs-view', 
+        ];
+        $userRole->givePermissionTo($userPermissions);
 
-        // Let's give few permissions to admin role.
-        $adminRole->givePermissionTo(['create role', 'view role', 'update role']);
-        $adminRole->givePermissionTo(['create permission', 'view permission']);
-        $adminRole->givePermissionTo(['create user', 'view user', 'update user']);
-        $adminRole->givePermissionTo(['create product', 'view product', 'update product']);
-
-
-        // Let's Create User and assign Role to it.
-
+        // Create users and assign roles
         $superAdminUser = User::firstOrCreate([
             'email' => 'superadmin@gmail.com',
         ], [
             'name' => 'Super Admin',
             'last_name' => 'Lastname',
             'ci' => '1111111',
-            'email' => 'superadmin@gmail.com',
             'password' => Hash::make('12345678'),
+            'status' => 1
         ]);
-
         $superAdminUser->assignRole($superAdminRole);
-
 
         $adminUser = User::firstOrCreate([
             'email' => 'admin@gmail.com'
@@ -75,12 +81,10 @@ class UserRolePermissionSeeder extends Seeder
             'name' => 'Admin',
             'last_name' => 'Lastname',
             'ci' => '2222222',
-            'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
+            'status' => 1
         ]);
-
         $adminUser->assignRole($adminRole);
-
 
         $staffUser = User::firstOrCreate([
             'email' => 'staff@gmail.com',
@@ -88,12 +92,20 @@ class UserRolePermissionSeeder extends Seeder
             'name' => 'Staff',
             'last_name' => 'Lastname',
             'ci' => '3333333',
-            'email' => 'staff@gmail.com',
             'password' => Hash::make('12345678'),
+            'status' => 1
         ]);
-
         $staffUser->assignRole($staffRole);
 
-        
+        $regularUser = User::firstOrCreate([
+            'email' => 'user@gmail.com',
+        ], [
+            'name' => 'User',
+            'last_name' => 'Lastname',
+            'ci' => '4444444',
+            'password' => Hash::make('12345678'),
+            'status' => 1
+        ]);
+        $regularUser->assignRole($userRole);
     }
 }

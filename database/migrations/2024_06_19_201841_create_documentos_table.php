@@ -17,9 +17,11 @@ return new class extends Migration
             $table->integer('id_tipo_documento');
             $table->binary('documento');
             $table->string('id_programa', 5);
+            $table->unsignedBigInteger('origen_tipos_id'); // Agregar columna para la clave foránea
             $table->timestamps();
 
- 
+            // Definir la clave foránea para origen_tipos_id
+            $table->foreign('origen_tipos_id')->references('id')->on('origen_tipos')->onDelete('cascade');
         });
     }
 

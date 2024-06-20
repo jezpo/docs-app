@@ -16,14 +16,15 @@ class Documento extends Model
         'estado',
         'hash',
         'id_programa',
-        'id_origen_tipo',
+        'origen_tipos_id',
+        'id_tipo_documento',
         'created_at'
     ];
 
     // Relación con el modelo OrigenTipo
     public function origenTipo()
     {
-        return $this->belongsTo(Origen::class, 'id_origen_tipo');
+        return $this->belongsTo(Origen::class, 'origen_tipos_id');
     }
 
     // Relación con el modelo Programa (suponiendo que hay un modelo Programa)
@@ -36,22 +37,19 @@ class Documento extends Model
     {
         return DB::table('documentos')
             ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
-            ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
-            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
+            ->join('origen_tipos', 'documentos.origen_tipos_id', '=', 'origen_tipos.id')
+            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.origen_tipos_id', 'origen_tipos.tipo')
             ->get();
     }
-
-
-
 
     public static function list_documents_enviados($startDate, $endDate)
     {
         return DB::table('documentos')
             ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
-            ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
+            ->join('origen_tipos', 'documentos.origen_tipos_id', '=', 'origen_tipos.id')
             ->where('origen_tipos.tipo', 'Enviado')
             ->whereBetween('documentos.created_at', [$startDate, $endDate])
-            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
+            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.origen_tipos_id', 'origen_tipos.tipo')
             ->get();
     }
 
@@ -59,28 +57,26 @@ class Documento extends Model
     {
         return DB::table('documentos')
             ->join('programas', 'documentos.id_programa', '=', 'programas.id_programa')
-            ->join('origen_tipos', 'documentos.id_origen_tipo', '=', 'origen_tipos.id')
+            ->join('origen_tipos', 'documentos.origen_tipos_id', '=', 'origen_tipos.id')
             ->where('origen_tipos.tipo', 'Recibido')
             ->whereBetween('documentos.created_at', [$startDate, $endDate])
-            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.id_origen_tipo', 'origen_tipos.tipo')
+            ->select('documentos.id', 'documentos.cite', 'documentos.descripcion', 'documentos.estado', 'documentos.id_tipo_documento', 'documentos.id_programa', 'programas.programa', 'documentos.origen_tipos_id', 'origen_tipos.tipo')
             ->get();
     }
-
-
-
 
     // Método para insertar un documento
     public static function insertData($data)
     {
         $pdo = DB::getPdo();
-        $stmt = $pdo->prepare("INSERT INTO documentos (cite, descripcion, estado, hash, documento, id_programa, id_origen_tipo, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmt = $pdo->prepare("INSERT INTO documentos (cite, descripcion, estado, hash, documento, id_programa, origen_tipos_id, id_tipo_documento, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         $stmt->bindParam(1, $data['cite']);
         $stmt->bindParam(2, $data['descripcion']);
         $stmt->bindParam(3, $data['estado']);
         $stmt->bindParam(4, $data['hash']);
         $stmt->bindParam(5, $data['documento'], \PDO::PARAM_LOB);
         $stmt->bindParam(6, $data['id_programa']);
-        $stmt->bindParam(7, $data['id_origen_tipo']);
+        $stmt->bindParam(7, $data['origen_tipos_id']); // Actualizado
+        $stmt->bindParam(8, $data['id_tipo_documento']); // Actualizado
         $stmt->execute();
     }
 
@@ -89,28 +85,29 @@ class Documento extends Model
     {
         $pdo = DB::getPdo();
         if (isset($data['documento'])) {
-            $stmt = $pdo->prepare("UPDATE documentos SET cite = ?, descripcion = ?, estado = ?, hash = ?, documento = ?, id_programa = ?, id_origen_tipo = ?, updated_at = NOW() WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE documentos SET cite = ?, descripcion = ?, estado = ?, hash = ?, documento = ?, id_programa = ?, origen_tipos_id = ?, id_tipo_documento = ?, updated_at = NOW() WHERE id = ?");
             $stmt->bindParam(1, $data['cite']);
             $stmt->bindParam(2, $data['descripcion']);
             $stmt->bindParam(3, $data['estado']);
             $stmt->bindParam(4, $data['hash']);
             $stmt->bindParam(5, $data['documento'], \PDO::PARAM_LOB);
             $stmt->bindParam(6, $data['id_programa']);
-            $stmt->bindParam(7, $data['id_origen_tipo']);
-            $stmt->bindParam(8, $id);
+            $stmt->bindParam(7, $data['origen_tipos_id']); // Actualizado
+            $stmt->bindParam(8, $data['id_tipo_documento']); // Actualizado
+            $stmt->bindParam(9, $id);
         } else {
-            $stmt = $pdo->prepare("UPDATE documentos SET cite = ?, descripcion = ?, estado = ?, hash = ?, id_programa = ?, id_origen_tipo = ?, updated_at = NOW() WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE documentos SET cite = ?, descripcion = ?, estado = ?, hash = ?, id_programa = ?, origen_tipos_id = ?, id_tipo_documento = ?, updated_at = NOW() WHERE id = ?");
             $stmt->bindParam(1, $data['cite']);
             $stmt->bindParam(2, $data['descripcion']);
             $stmt->bindParam(3, $data['estado']);
             $stmt->bindParam(4, $data['hash']);
             $stmt->bindParam(5, $data['id_programa']);
-            $stmt->bindParam(6, $data['id_origen_tipo']);
-            $stmt->bindParam(7, $id);
+            $stmt->bindParam(6, $data['origen_tipos_id']); // Actualizado
+            $stmt->bindParam(7, $data['id_tipo_documento']); // Actualizado
+            $stmt->bindParam(8, $id);
         }
         $stmt->execute();
     }
-
 
     // Método para ver los datos de un documento
     public static function viewData($id)

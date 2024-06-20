@@ -4,32 +4,32 @@
     </a>
 </li>
 <li>
-        <a href="{{ url('gestion') }}">
-            <i class="material-icons">event</i> <span>Gestion</span>
-        </a>
+    <a href="{{ url('gestion') }}">
+        <i class="material-icons">event</i> <span>Gestion</span>
+    </a>
 </li>
 <li>
-        <a href="{{ url('permissions') }}">
-            <i class="material-icons">lock</i> <span>Permisos</span>
-        </a>
-</li>
-
-<li>
-        <a href="{{ url('roles') }}">
-            <i class="material-icons">security</i><span>Roles</span>
-        </a>
+    <a href="{{ url('permissions') }}">
+        <i class="material-icons">lock</i> <span>Permisos</span>
+    </a>
 </li>
 
 <li>
-        <a href="{{ url('documentos') }}">
-            <i class="material-icons">description</i> <span>Documentos</span>
-        </a>
+    <a href="{{ url('roles') }}">
+        <i class="material-icons">security</i><span>Roles</span>
+    </a>
 </li>
 
 <li>
-        <a href="{{ url('/dashboard/programas') }}">
-            <i class="material-icons">school</i> <span>Unidad</span>
-        </a>
+    <a href="{{ url('documentos') }}">
+        <i class="material-icons">description</i> <span>Documentos</span>
+    </a>
+</li>
+
+<li>
+    <a href="{{ url('programas') }}">
+        <i class="material-icons">school</i> <span>Unidad</span>
+    </a>
 </li>
 
 <li>

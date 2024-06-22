@@ -5,28 +5,44 @@
 
 
 @push('css')
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/ion-rangeslider/css/ion.rangeSlider.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}"
+    rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/@danielfarrell/bootstrap-combobox/css/bootstrap-combobox.css') }}"
+    rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/tag-it/css/jquery.tagit.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}"
+    rel="stylesheet" />
+<link href="{{ asset('assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-fontawesome.css') }}"
+    rel="stylesheet" />
+<link href="{{ asset('assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css') }}"
+    rel="stylesheet" />
 
-    <link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
-    <link href="/assets/plugins/ion-rangeslider/css/ion.rangeSlider.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/@danielfarrell/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/tag-it/css/jquery.tagit.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
-    <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
-        rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css" rel="stylesheet" />
-    <link href="/assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.css" rel="stylesheet" />
-    <link href="/assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-fontawesome.css" rel="stylesheet" />
-    <link href="/assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css" rel="stylesheet" />
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+<!-- ================== BEGIN BASE CSS STYLE ================== -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="../assets/css/material/app.min.css" rel="stylesheet" />
+<!-- ================== END BASE CSS STYLE ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="../assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-autofill-bs4/css/autofill.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-colreorder-bs4/css/colreorder.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-keytable-bs4/css/keytable.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-rowreorder-bs4/css/rowreorder.bootstrap4.min.css" rel="stylesheet" />
+<link href="../assets/plugins/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" />
+<!-- ================== END PAGE LEVEL STYLE ================== -->
 @endpush
 
 @section('content')
@@ -65,31 +81,82 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-bordered">
+            <table id="activityLogsTable" class="table table-striped table-bordered table-td-valign-middle dt-responsive nowrap"
+            style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Modelo</th>
-                        <th>Acción</th>
-                        <th>Detalles</th>
-                        <th>Usuario</th>
-                        <th>Fecha</th>
+                        <th>Model Type</th>
+                        <th>Model ID</th>
+                        <th>Action</th>
+                        {{--<th>Details</th>--}}
+                        <th>User</th>
+                        <th>Created At</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($logs as $log)
-                        <tr>
-                            <td>{{ $log->id }}</td>
-                            <td>{{ $log->model_type ?? 'N/A' }}</td>
-                            <td>{{ $log->action }}</td>
-                            <td>{{ $log->details }}</td>
-                            <td>{{ $log->user ? $log->user->name : 'Sistema' }}</td>
-                            <td>{{ $log->created_at }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
             </table>
-            {{ $logs->links() }}
+
         </div>
     </div>
+    
 @endsection
+
+@push('scripts')
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../assets/js/app.min.js"></script>
+	<script src="../assets/js/theme/material.min.js"></script>
+	<!-- ================== END BASE JS ================== -->
+	
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="../assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="../assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="../assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-autofill/js/dataTables.autofill.min.js"></script>
+	<script src="../assets/plugins/datatables.net-autofill-bs4/js/autofill.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-colreorder/js/dataTables.colreorder.min.js"></script>
+	<script src="../assets/plugins/datatables.net-colreorder-bs4/js/colreorder.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-keytable/js/dataTables.keytable.min.js"></script>
+	<script src="../assets/plugins/datatables.net-keytable-bs4/js/keytable.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-rowreorder/js/dataTables.rowreorder.min.js"></script>
+	<script src="../assets/plugins/datatables.net-rowreorder-bs4/js/rowreorder.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-select/js/dataTables.select.min.js"></script>
+	<script src="../assets/plugins/datatables.net-select-bs4/js/select.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../assets/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+	<script src="../assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+	<script src="../assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	<script src="../assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	<script src="../assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
+	<script src="../assets/plugins/pdfmake/build/pdfmake.min.js"></script>
+	<script src="../assets/plugins/pdfmake/build/vfs_fonts.js"></script>
+	<script src="../assets/plugins/jszip/dist/jszip.min.js"></script>
+	<script src="../assets/js/demo/table-manage-combine.demo.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+    <script>
+        $(document).ready(function() {
+            $('#activityLogsTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('activity.logs.data') }}",
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'model_type', name: 'model_type' },
+                    { data: 'model_id', name: 'model_id' },
+                    { data: 'action', name: 'action' },
+                    //{ data: 'details', name: 'details' },
+                    { data: 'user_name', name: 'user.name' },
+                    { data: 'created_at', name: 'created_at' }
+                ],
+                language: {
+                    url: '/assets/plugins/datatables.net/Spanish.json'
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+                
+            });
+        });
+    </script>
+@endpush

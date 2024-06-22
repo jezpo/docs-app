@@ -43,7 +43,7 @@
             <!-- begin brand -->
             <div class="login-header">
                 <div class="brand">
-                    <b>UATF</b> DBU
+                    <b>Ges. Documental</b> DBU
                     <small>Iniciar Session</small>
                 </div>
                 <div class="icon">

@@ -25,14 +25,17 @@ class ProgramaController extends Controller
             $programa = Programa::all();
             return DataTables::of($programa)
                 ->addColumn('action', function ($programa) {
-                    $button = '';
+                    $actionButtons = '';
                     if (Auth::user()->can('programa-edit')) {
-                        $button .= '&nbsp;&nbsp;<a href="javascript:void(0)" type="button" data-toggle="tooltip" onclick="editProgram(' . $programa->id . ')" class="edit btn btn-primary btn-sm "><i class="fas fa-edit"></i> Editar</a>';
+                        $actionButtons .= '&nbsp;&nbsp;<a href="javascript:void(0)" type="button" data-toggle="tooltip" onclick="editProgram(' . $programa->id . ')" class="edit btn btn-primary btn-sm "><i class="fas fa-edit"></i> Editar</a>';
                     }
                     if (Auth::user()->can('programa-delete')) {
-                        $button .= '&nbsp;&nbsp;<button type="button" data-toggle="tooltip" name="deleteDocument" onclick="deleteProgram(' . $programa->id . ')" class="delete btn btn-danger btn-sm "><i class="fas fa-trash"></i> Eliminar</button>';
+                        $actionButtons .= '&nbsp;&nbsp;<button type="button" data-toggle="tooltip" name="deleteDocument" onclick="deleteProgram(' . $programa->id . ')" class="delete btn btn-danger btn-sm "><i class="fas fa-trash"></i> Eliminar</button>';
                     }
-                    return $button;
+                    if (empty($actionButtons)) {
+                        $actionButtons = '<div style="padding: 5px;"><span style="background-color: #7FFF00; padding: 2px; border-radius: 3px;">Sin Acción</span></div>';
+                    }
+                    return $actionButtons;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

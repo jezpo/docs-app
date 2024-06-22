@@ -19,8 +19,12 @@ class StatisticsController extends Controller
         $totalProgramas = Programa::count();
         $gestion = Gestion::count();
         $totalDocumentosToday = Documento::whereDate('created_at', date('Y-m-d'))->count();
-        $totalDocumentosThisWeek = Documento::whereBetween('created_at', [date('Y-m-d', strtotime('last monday')), date('Y-m-d', strtotime('next sunday'))])->count();
-        $totalDocumentosThisMonth = Documento::whereBetween('created_at', [date('Y-m-01'), date('Y-m-t')])->count();
+        $totalDocumentosThisWeek = Documento::whereBetween('created_at', 
+                                                            [date('Y-m-d', 
+                                                            strtotime('last monday')), 
+                                                            date('Y-m-d', strtotime('next sunday'))])->count();
+        $totalDocumentosThisMonth = Documento::whereBetween('created_at', [date('Y-m-01'), 
+        date('Y-m-t')])->count();
 
 
         return [

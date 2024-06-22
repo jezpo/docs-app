@@ -46,14 +46,18 @@ Route::middleware([
         // Ruta para el índice de reportes
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
-        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity.logs.index');
+        Route::get('/activity-logs/data', [ActivityLogController::class, 'getLogs'])->name('activity.logs.data');
 
         Route::resource('documentos', DocumentosController::class);
         Route::get('documentos/edit/{id}', [DocumentosController::class, 'edit'])->name('documentos.edit');
         Route::put('documentos/update/{id}', [DocumentosController::class, 'update'])->name('documentos.update');
         Route::delete('documentos/destroy/{id}', [DocumentosController::class, 'destroy'])->name('documentos.destroy');
         Route::get('documentos/download/{id}', [DocumentosController::class, 'downloadPdf'])->name('documentos.download');
-        Route::get('/generate-cite', [DocumentosController::class, 'generateCite'])->name('generateCite');
+
+        Route::get('/generateCite', [DocumentosController::class, 'generateCite'])->name('generateCite');
+
+
 
         Route::resource('programas', ProgramaController::class);
         Route::get('/dashboard/programas/get-documents/{year}', [ProgramaController::class, 'getDocumentsByYear'])->name('programas.getDocumentsByYear');

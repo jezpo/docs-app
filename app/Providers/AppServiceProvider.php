@@ -7,6 +7,8 @@ use App\Models\Documento;
 use App\Models\User;
 use App\Models\Programa;
 use App\Models\Gestion;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\Observers\ActivityLogObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
         User::observe(ActivityLogObserver::class);
         Programa::observe(ActivityLogObserver::class);
         Gestion::observe(ActivityLogObserver::class);
+        Role::observe(ActivityLogObserver::class);
+        Permission::observe(ActivityLogObserver::class);
     }
 
     public function register()

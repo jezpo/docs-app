@@ -52,32 +52,20 @@
             <div id="data-table-combine_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="dataTables_wrapper dt-bootstrap">
                     <div class="table-responsive">
-                        <div class="">
-                            <!-- Botón para abrir el modal de creación -->
-                            <br>
-                            <!-- DONDE MUESTRA LAS TABLAS ATRAVES DE DATA TABLES -->
-                            <div style="position: absolute; height: 1px; width: 0px; overflow: hidden;">
-                                <input type="text" tabindex="0">
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table id="documentos-table"
-                                        class="table table-striped table-bordered table-td-valign-middle dt-responsive nowrap"
-                                        style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-nowrap">Nro.</th>
-                                                <th class="text-nowrap">Cite</th>
-                                                <th class="text-nowrap">Descripción</th>
-                                                <th class="text-nowrap">Estado</th>
-                                                <th class="text-nowrap">Tipo de Documento</th>
-                                                <th class="text-nowrap">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <table id="documentos-table"
+                            class="table table-striped table-bordered table-td-valign-middle dt-responsive nowrap"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap">Nro.</th>
+                                    <th class="text-nowrap">Cite</th>
+                                    <th class="text-nowrap">Descripción</th>
+                                    <th class="text-nowrap">Estado</th>
+                                    <th class="text-nowrap">Tipo de Documento</th>
+                                    <th class="text-nowrap">Acciones</th>
+                                </tr>
+                            </thead>
+                        </table>
                         <!-- end panel-body -->
                     </div>
                 </div>
@@ -128,8 +116,10 @@
                                     <select class="form-control" id="origen_tipos_id" name="origen_tipos_id"
                                         data-parsley-required="true">
                                         <option value="">Por favor selecciona una opción</option>
-                                        <option value="1" data-tipo="1">Enviado</option>
-                                        <option value="2" data-tipo="2">Recibido</option>
+                                        @foreach ($origenTipos as $tipo)
+                                            <option value="{{ $tipo->id }}" data-tipo="{{ $tipo->tipo }}">
+                                                {{ $tipo->tipo }}</option>
+                                        @endforeach
                                     </select>
                                     @error('origen_tipos_id')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
@@ -142,9 +132,10 @@
 
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label" for="cite">Cite:</label>
+
                                 <div class="col-md-8 col-sm-8">
-                                    <input class="form-control" type="text" id="cite" name="cite"
-                                        placeholder="cite" data-parsley-required="true">
+                                    <input type="text" class="form-control" id="cite" name="cite"
+                                        data-parsley-required="true">
                                     @error('cite')
                                         <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
                                             <li class="parsley-required">{{ 'Este valor es requerido' }}
@@ -281,7 +272,8 @@
                             <div class="form-group row m-b-15">
                                 <label class="col-md-4 col-sm-4 col-form-label">Tipo de Documento:</label>
                                 <div class="col-md-8 col-sm-8">
-                                    <select class="form-control" id="origen_tipos_id2" name="origen_tipos_id" data-parsley-required="true">
+                                    <select class="form-control" id="origen_tipos_id2" name="origen_tipos_id"
+                                        data-parsley-required="true">
                                         <option value="">Por favor selecciona una opción</option>
                                         <option value="1" data-tipo="1">Enviado</option>
                                         <option value="2" data-tipo="2">Recibido</option>
@@ -796,7 +788,7 @@
             formData.append('id_programa', id_programa2);
             if (documento2) {
                 formData.append('documento',
-                documento2); // Agregar los datos del archivo a los datos del formulario
+                    documento2); // Agregar los datos del archivo a los datos del formulario
             }
             formData.append('_token', _token2);
             $.ajax({
@@ -879,34 +871,24 @@
             });
         }
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('origen_tipos_id').addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const tipo = selectedOption.getAttribute('data-tipo');
-                const citeField = document.getElementById('cite');
-                const anioGestion = document.getElementById('anio_gestion').value;
 
-                if (tipo === '1') { // Tipo "Enviado"
-                    fetch(`{{ route('generateCite') }}?anio_gestion=${anioGestion}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.cite) {
-                                citeField.value = data.cite;
-                                citeField.readOnly = true; // Hacer el campo de solo lectura
-                            } else {
-                                alert('Error al generar el cite.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Error al realizar la solicitud.');
-                        });
-                } else { // Tipo "Recibido"
-                    citeField.value = ''; // Limpia el valor del campo
-                    citeField.readOnly = false; // Habilitar el campo para edición
-                }
-            });
+    <script>
+        let citeCounter = 1;
+
+        document.getElementById('origen_tipos_id').addEventListener('change', function() {
+            const origenTiposId = this.value;
+            const citeInput = document.getElementById('cite');
+            const anioGestion = document.getElementById('anio_gestion').value;
+
+            if (origenTiposId === '1') { // Suponiendo que '1' es el ID para "enviado"
+                const cite = `UATF/DBU/${citeCounter}/${anioGestion}`;
+                citeInput.value = cite;
+                citeInput.readOnly = true; // Hacer el campo de solo lectura
+                citeCounter++;
+            } else {
+                citeInput.value = '';
+                citeInput.readOnly = false; // Permitir la edición manual
+            }
         });
     </script>
 

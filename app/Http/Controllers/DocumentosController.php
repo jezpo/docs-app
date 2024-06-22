@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class DocumentosController extends Controller
 {
@@ -68,47 +70,91 @@ class DocumentosController extends Controller
 
     public function store(Request $request)
     {
+        Log::info('Iniciando el método store.');
+    
+        // Validación de datos
         $request->validate([
             'origen_tipos_id' => 'required|integer|exists:origen_tipos,id',
-            'cite' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'estado' => 'required|string|in:A,I',
             'id_tipo_documento' => 'required|integer',
-            'id_programa' => 'required|string|max:5|exists:programas,id_programa',
-            'documento' => 'sometimes|file|mimes:pdf|max:512000', // 500 MB máximo
+            'documento' => 'required|file|mimes:pdf|max:102400', // 100 MB máximo
+            'anio_gestion' => 'required|integer',
+            'id_programa' => 'required|string|exists:programas,id_programa'
         ]);
-
+    
         try {
-            $gestion = Gestion::latest()->first();
-            $lastDocument = Documento::where('id_programa', $request->id_programa)->whereYear('created_at', $gestion->anio)->latest()->first();
-            $citeNumber = $lastDocument ? intval(substr($lastDocument->cite, -4)) + 1 : 1;
-            $cite = "UATF/DBU/{$gestion->anio}/" . str_pad($citeNumber, 4, '0', STR_PAD_LEFT);
-
-            $fileData = null;
-            if ($request->hasFile('documento')) {
-                $fileData = file_get_contents($request->file('documento')->getRealPath());
-            } else {
-                $fileData = '';
+            $file = $request->file('documento');
+    
+            if (!$file->isValid()) {
+                throw new \Exception('El archivo no es válido.');
             }
-
+    
+            $fileData = file_get_contents($file->getRealPath());
+    
+            if ($fileData === false) {
+                throw new \Exception('No se pudo leer el archivo.');
+            }
+    
+            Log::info('Archivo leído exitosamente.');
+    
+            // Obtener el tipo de origen desde la base de datos
+            $origenTipo = DB::table('origen_tipos')->where('id', $request->origen_tipos_id)->value('tipo');
+            $cite = $request->input('cite');
+    
+            if ($origenTipo === 'enviado' && !$cite) {
+                $cite = $this->generateCite($request->anio_gestion);
+                Log::info('Cite generado: ' . $cite);
+            }
+    
             $data = [
                 'cite' => $cite,
                 'descripcion' => $request->descripcion,
                 'estado' => $request->estado,
                 'hash' => hash('md5', $cite . $request->descripcion),
-                'id_tipo_documento' => $request->id_tipo_documento,
                 'documento' => $fileData,
                 'id_programa' => $request->id_programa,
                 'origen_tipos_id' => $request->origen_tipos_id,
+                'id_tipo_documento' => $request->id_tipo_documento,
+                'created_at' => now(),
+                'updated_at' => now()
             ];
-
+    
             Documento::insertData($data);
-
-            return response()->json(['success' => 'Documento creado con éxito'], 200);
+    
+            Log::info('Documento creado exitosamente.');
+            return response()->json([
+                'success' => 'El archivo ha sido subido.',
+                'cite' => $cite
+            ], 200);
+    
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al crear el documento', 'message' => $e->getMessage()], 500);
+            Log::error('Error al subir el archivo: ' . $e->getMessage());
+            return response()->json(['error' => 'Ocurrió un error al subir el archivo: ' . $e->getMessage()], 500);
         }
     }
+    
+    public function generateCite($anio_gestion)
+    {
+        $lastCite = DB::table('documentos')
+            ->whereYear('created_at', $anio_gestion)
+            ->orderBy('created_at', 'desc')
+            ->value('cite');
+    
+        $nextNumber = 1;
+        if ($lastCite) {
+            preg_match('/\/(\d+)\/' . $anio_gestion . '$/', $lastCite, $matches);
+            if (isset($matches[1])) {
+                $nextNumber = (int)$matches[1] + 1;
+            }
+        }
+    
+        $newCite = 'UATF/DBU/' . $nextNumber . '/' . $anio_gestion;
+    
+        return $newCite;
+    }
+    
+
 
     public function update(Request $request, $id)
     {
@@ -173,21 +219,6 @@ class DocumentosController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al visualizar el documento', 'message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function generateCite(Request $request)
-    {
-        $anioGestion = $request->get('anio_gestion');
-
-        if ($anioGestion) {
-            $lastDocument = Documento::whereYear('created_at', $anioGestion)->latest()->first();
-            $citeNumber = $lastDocument ? intval(substr($lastDocument->cite, -4)) + 1 : 1;
-            $cite = "UATF/DBU/{$anioGestion}/" . str_pad($citeNumber, 4, '0', STR_PAD_LEFT);
-
-            return response()->json(['cite' => $cite]);
-        } else {
-            return response()->json(['error' => 'Año de gestión no encontrado'], 404);
         }
     }
 
